@@ -3,18 +3,40 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
+
 var Waterline = require('waterline');
-var postgresqlAdapter = require('sails-postgresql');
-
-var indexRouter = require('./controllers/index');
-var todoRouter = require('./controllers/todo');
-var loginRouter = require('./controllers/login');
-
 var waterlineConfig = require('./config/waterline');
-var todoCollection = require('./models/todo');
+var errorCollection = require('./models/error');
 var userCollection = require('./models/user');
 
-var app = express();
+var indexController = require('./controllers/index');
+var errorController = require('./controllers/error');
+var loginController = require('./controllers/login');
+
+var hbs = require('hbs');
+
+//-----------------------------------------------------
+
+var blocks = {};
+
+hbs.registerHelper('extend', function(name, context) {
+    var block = blocks[name];
+    if (!block) {
+        block = blocks[name] = [];
+    }
+
+    block.push(context.fn(this));
+});
+
+hbs.registerHelper('block', function(name) {
+    var val = (blocks[name] || []).join('\n');
+
+    // clear the block
+    blocks[name] = [];
+    return val;
+});
+
+//-------------------------------------------
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -25,7 +47,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
 });
-
 
 // Local Strategy for sign-up
 passport.use('local-signup', new LocalStrategy({
@@ -84,36 +105,30 @@ function andRestrictTo(role) {
         if (req.user.role == role) {
             next();
         } else {
-            console.log(req.user.role);
-            res.redirect('/login');
-            //next(new Error('Unauthorized'));
+            next(new Error('Unauthorized'));
         }
     }
 }
 
-
-//Model layer
-var errorContainer = [];
-
-
+//-------------------------------------------
+//  express app
+var app = express();
 
 //config
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
-
-//middleware
+//middlewares
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 600000 },
     secret: 'titkos szoveg',
     resave: false,
     saveUninitialized: false,
 }));
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -121,29 +136,23 @@ app.use(setLocalsForLayout());
 
 
 //endpoints
-app.use('/', indexRouter);
-app.use('/todo', todoRouter);
-app.use('/login', loginRouter);
+app.use('/', indexController);
+// app.use('/errors', errorController);
+app.use('/errors', ensureAuthenticated, errorController);
+app.use('/login', loginController);
 
 app.get('/operator', ensureAuthenticated, andRestrictTo('operator'), function(req, res) {
     res.end('operator');
 });
-
-app.get('/user', ensureAuthenticated, andRestrictTo('riporter'), function(req, res) {
-     res.redirect('/');
-});
-
-app.get('/logout', function(req, res) {
+app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
 
-
 // ORM példány
 var orm = new Waterline();
-orm.loadCollection(Waterline.Collection.extend(todoCollection));
+orm.loadCollection(Waterline.Collection.extend(errorCollection));
 orm.loadCollection(Waterline.Collection.extend(userCollection));
-
 
 // ORM indítása
 orm.initialize(waterlineConfig, function(err, models) {
@@ -157,5 +166,6 @@ orm.initialize(waterlineConfig, function(err, models) {
     app.listen(port, function () {
         console.log('Server is started.');
     });
+    
     console.log("ORM is started.");
 });

@@ -5,14 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <title>Családi ToDo</title>
+    <title>Hibabejelentő</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/lib/bootswatch/sandstone/bootstrap.min.css">
-   
 </head>
 <body>
- {{szoveg}}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -27,7 +25,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="#">Családi ToDo</a>
+                      <a class="navbar-brand" href="#">Hibabejelentő</a>
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,23 +46,21 @@
                           </ul>
                         </li>
                       </ul> -->
-                      
                       <ul class="nav navbar-nav navbar-right">
-                          {{#if loggedIn}}
-                          <li><a href="/logout">Kilépés</a></li>
-                          {{else}}
-                          <li><a href="/login">Bejelentkezés</a></li>
-                          {{/if}}
-                          <li><a href="#">About</a></li>
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">About</a></li>
                       </ul>
-                      {{#if loggedIn}}
-                      <p class="navbar-text navbar-right">Üdv, {{user.forename}}!</p>
-                      {{/if}}
                     </div><!-- /.navbar-collapse -->
                   </div><!-- /.container-fluid -->
                 </nav>
 
-                {{{body}}}
+                <div class="page-header">
+                    <h1>Hibabejelentés az IK-n</h1>
+                </div>
+
+                <p>
+                    Blabla blabla blabla
+                </p>
 
             </div>
         </div>

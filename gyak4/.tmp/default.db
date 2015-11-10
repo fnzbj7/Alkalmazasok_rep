@@ -1,0 +1,124 @@
+{
+  "data": {
+    "todo": [
+      {
+        "status": "new",
+        "location": "Almafa",
+        "description": "Kacsa",
+        "date": "2015-11-10T20:24:18.595Z",
+        "createdAt": "2015-11-10T20:24:18.601Z",
+        "updatedAt": "2015-11-10T20:24:18.601Z",
+        "id": 1
+      },
+      {
+        "status": "new",
+        "location": "Takarítás",
+        "description": "kacsa",
+        "date": "2015-11-10T22:54:08.498Z",
+        "createdAt": "2015-11-10T22:54:08.506Z",
+        "updatedAt": "2015-11-10T22:54:08.506Z",
+        "id": 2
+      }
+    ],
+    "user": [
+      {
+        "surname": "Árpás",
+        "forename": "Milán",
+        "neptun": "fnzbj7",
+        "password": "$2a$10$h3n3iU1eXJ74FD5BpUUoMeLwA6wFMbA3HUbBw4oIDjGNQNlpE7flW",
+        "avatar": "",
+        "role": "riporter",
+        "createdAt": "2015-11-10T20:24:48.731Z",
+        "updatedAt": "2015-11-10T20:24:48.731Z",
+        "id": 1
+      }
+    ]
+  },
+  "schema": {
+    "todo": {
+      "date": {
+        "type": "datetime"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "new",
+          "assigned",
+          "success",
+          "rejected",
+          "pending"
+        ]
+      },
+      "location": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "user": {
+        "type": "integer",
+        "model": "user",
+        "foreignKey": true,
+        "alias": "user"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "user": {
+      "neptun": {
+        "type": "string",
+        "unique": true
+      },
+      "password": {
+        "type": "string"
+      },
+      "surname": {
+        "type": "string"
+      },
+      "forename": {
+        "type": "string"
+      },
+      "avatar": {
+        "type": "string"
+      },
+      "role": {
+        "type": "string",
+        "enum": [
+          "riporter",
+          "operator"
+        ],
+        "defaultsTo": "riporter"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "todo": {
+      "id": 2
+    },
+    "user": {
+      "id": 1
+    }
+  }
+}
