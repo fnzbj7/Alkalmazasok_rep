@@ -8,6 +8,12 @@ Lehessen regisztrálni és bejelentkezni. Legyen a bejelentketkezett és a nembe
 
 ##Környezet 
 A weboldal szerveroldala Node.js-el készült.
+
+
+##Végpontok
+
+Az első végpont az oldal főoldala. Innen elérhető a bejelentkezés, a lista megtekintése és új listasor felvétele. Bejelentkezés oldaláról be tudunk jelentkezni, és tudunk a regisztrációs oldalra átmenni. A regisztrálás oldalról visszaléphetünk a bejelentkezés oldalára. A lista oldaláról elérhetjük az új sor feltöltését, és ha be vagyunk jelentkezve, akkor tudjuk a sorokat törölni és módosítani azokat. 
+
  
 ##Tesztelés
  
